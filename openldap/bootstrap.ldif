@@ -1,0 +1,52 @@
+dn: cn=andy,dc=musobarmedia,dc=com
+changetype: add
+objectclass: inetOrgPerson
+cn: andy
+givenname: andy
+sn: Andy
+displayname: Andy Rae
+mail: andy@gmail.com
+userpassword: andy_pass
+
+dn: cn=bony,dc=musobarmedia,dc=com
+changetype: add
+objectclass: inetOrgPerson
+cn: bony
+givenname: bony
+sn: Bony
+displayname: Bony Banjar
+mail: bony@gmail.com
+userpassword: bony_pass
+
+dn: cn=rob,dc=musobarmedia,dc=com
+changetype: add
+objectclass: inetOrgPerson
+cn: rob
+givenname: rob
+sn: Rob
+displayname: Rob Stark
+mail: rob@gmail.com
+userpassword: rob_pass
+
+dn: ou=Groups,dc=musobarmedia,dc=com
+changetype: add
+objectclass: organizationalUnit
+ou: Groups
+
+dn: ou=Users,dc=musobarmedia,dc=com
+changetype: add
+objectclass: organizationalUnit
+ou: Users
+
+dn: cn=Admins,ou=Groups,dc=musobarmedia,dc=com
+changetype: add
+cn: Admins
+objectclass: groupOfUniqueNames
+uniqueMember: cn=rob,dc=musobarmedia,dc=com
+
+dn: cn=Maintaners,ou=Groups,dc=musobarmedia,dc=com
+changetype: add
+cn: Maintaners
+objectclass: groupOfUniqueNames
+uniqueMember: cn=bony,dc=musobarmedia,dc=com
+uniqueMember: cn=andy,dc=musobarmedia,dc=com

@@ -1,0 +1,37 @@
+version: '3.7'
+services:
+    ldap_server:
+        build: ./openldap
+        command: --copy-service
+        environment:
+            LDAP_ADMIN_PASSWORD: test1234
+            LDAP_BASE_DN: dc=musobarmedia,dc=com
+        ports:
+            - 389:389
+            - 636:636
+        volumes:
+            - ./volumes/openldap/ldap_data:/var/lib/ldap
+            - ./volumes/openldap/ldap_config:/etc/ldap/slapd.d
+        networks: 
+            myldap:
+                aliases:
+                    - ldap.server.me
+    ldap_server_admin:
+        image: osixia/phpldapadmin:0.7.2
+        ports:
+            - 9000:80
+        # volumes: 
+        #     - ./volumes/ldapadmin/config:/container/service/phpldapadmin/assets/config
+        environment:
+            PHPLDAPADMIN_LDAP_HOSTS: ldap.server.me
+            PHPLDAPADMIN_HTTPS: 'false'
+        networks: 
+            myldap:
+
+        depends_on: 
+            - ldap_server
+networks:
+    myldap:
+        driver: bridge
+
+# docker exec openldap-docker_ldap_server_1 ldapsearch -x -H ldap://localhost -b dc=musobarmedia,dc=com -D "cn=developer,dc=musobarmedia,dc=com" -w developer_pass
