@@ -31,23 +31,23 @@ mail: rob@gmail.com
 mobile: 0822667752
 userpassword: rob_pass
 
-dn: ou=Groups,dc=musobarmedia,dc=com
+dn: ou=IT,dc=musobarmedia,dc=com
 changetype: add
 objectclass: organizationalUnit
-ou: Groups
+ou: IT
 
-dn: ou=Users,dc=musobarmedia,dc=com
+dn: ou=HR,dc=musobarmedia,dc=com
 changetype: add
 objectclass: organizationalUnit
-ou: Users
+ou: HR
 
-dn: cn=Admins,ou=Groups,dc=musobarmedia,dc=com
+dn: cn=Admins,ou=HR,dc=musobarmedia,dc=com
 changetype: add
 cn: Admins
 objectclass: groupOfUniqueNames
 uniqueMember: cn=rob,dc=musobarmedia,dc=com
 
-dn: cn=Maintaners,ou=Groups,dc=musobarmedia,dc=com
+dn: cn=Maintaners,ou=IT,dc=musobarmedia,dc=com
 changetype: add
 cn: Maintaners
 objectclass: groupOfUniqueNames
