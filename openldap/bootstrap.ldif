@@ -6,6 +6,7 @@ givenname: andy
 sn: Andy
 displayname: Andy Rae
 mail: andy@gmail.com
+mobile: 0822667722
 userpassword: andy_pass
 
 dn: cn=bony,dc=musobarmedia,dc=com
@@ -16,6 +17,7 @@ givenname: bony
 sn: Bony
 displayname: Bony Banjar
 mail: bony@gmail.com
+mobile: 0822667733
 userpassword: bony_pass
 
 dn: cn=rob,dc=musobarmedia,dc=com
@@ -26,6 +28,7 @@ givenname: rob
 sn: Rob
 displayname: Rob Stark
 mail: rob@gmail.com
+mobile: 0822667752
 userpassword: rob_pass
 
 dn: ou=Groups,dc=musobarmedia,dc=com

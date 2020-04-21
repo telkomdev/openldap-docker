@@ -1,7 +1,9 @@
 package main
 
 import (
+	"crypto/tls"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/go-ldap/ldap/v3"
@@ -9,19 +11,27 @@ import (
 
 // UserResult represent LDAP users
 type UserResult struct {
-	DN          string
-	CN          string
-	SN          string
-	DisplayName string
-	GivenName   string
-	Email       string
-	Password    string
+	DN            string
+	CN            string
+	SN            string
+	DisplayName   string
+	GivenName     string
+	Email         string
+	Password      string
+	MobileNumber  string
+	Country       string
+	City          string
+	Street        string
+	StreetAddress string
+	Department    string
+	JobTitle      string
 }
 
 // LDAPToUser convert lda.Entry into UserResult
 func LDAPToUser(entries []*ldap.Entry) UserResult {
 	var user UserResult
 	for _, v := range entries[0].Attributes {
+		fmt.Println(v.Name)
 		switch v.Name {
 		case "dn":
 			user.DN = v.Values[0]
@@ -35,8 +45,22 @@ func LDAPToUser(entries []*ldap.Entry) UserResult {
 			user.GivenName = v.Values[0]
 		case "mail":
 			user.Email = v.Values[0]
+		case "mobile":
+			user.MobileNumber = v.Values[0]
 		case "userPassword":
 			user.Password = v.Values[0]
+		case "co":
+			user.Country = v.Values[0]
+		case "l":
+			user.City = v.Values[0]
+		case "street":
+			user.Street = v.Values[0]
+		case "streetaddress":
+			user.StreetAddress = v.Values[0]
+		case "department":
+			user.Department = v.Values[0]
+		case "title":
+			user.JobTitle = v.Values[0]
 		}
 	}
 
@@ -62,10 +86,33 @@ func main() {
 	defer func() { ld.Close() }()
 
 	// Reconnect with TLS
-	// err = ld.StartTLS(&tls.Config{InsecureSkipVerify: true})
+
+	cert, err := tls.LoadX509KeyPair("openldap/certs/server.crt", "openldap/certs/server.key")
+	if err != nil {
+		log.Fatalf("server: loadkeys: %s", err)
+		os.Exit(1)
+	}
+
+	//create certificate pool from CA
+	// certPool := x509.NewCertPool()
+	// ca, err := ioutil.ReadFile("openldap/certs/server.crt")
 	// if err != nil {
-	// 	fmt.Println("here..")
+	// 	return fmt.Errorf("cannot load certificate authority : %s", err)
 	// }
+
+	// //append the client certificate from the CA
+	// if ok := certPool.AppendCertsFromPEM(ca); !ok {
+	// 	return errors.New("failed append client cert")
+	// }
+
+	// InsecureSkipVerify: true
+	// if CA you are using is a self signed SSL
+	config := tls.Config{Certificates: []tls.Certificate{cert}, InsecureSkipVerify: true}
+
+	err = ld.StartTLS(&config)
+	if err != nil {
+		fmt.Println("here..")
+	}
 
 	// First bind with a read only user
 	err = ld.Bind(adminUser, adminPass)
